@@ -1,5 +1,5 @@
 console.clear();
-console.log("© 𝚅𝚛𝚞𝚜𝚑 𝙼𝚊𝚛𝚒𝚊 𝚟𝟸 by 𝕽𝖆𝖛𝖊𝖓-𝓗𝓲𝓼𝓸𝓴𝓪");
+console.log("© 𝚅𝚛𝚞𝚜𝚑 𝙼𝚊𝚛𝚒𝚊 𝚟𝟸 by 𝕽𝖆𝖛𝖊𝖓-𝓗𝓲𝓼𝓸𝓀𝓪");
 require("./config");
 const {
   default: makeWASocket,
@@ -31,6 +31,8 @@ const FileType = require('file-type');
 const readline = require("readline");
 const fs = require('fs');
 const crypto = require("crypto");
+const chalk = require('chalk');
+const { File } = require('megajs');
 const {
   smsg,
   sleep,
@@ -61,11 +63,40 @@ cfonts.say("Vrush Maria v2", {
   'background': "transparent",
   'rawMode': false
 });
+
+async function initializeSession() {
+  const megaFolderId = "YOUR_MEGA_FOLDER_ID"; // Replace with your MEGA folder ID
+  const megaFileId = "YOUR_MEGA_FILE_ID"; // Replace with your MEGA file ID (e.g., session data file)
+  const sessionPath = "./session";
+
+  // Check if session data already exists locally
+  if (fs.existsSync(sessionPath)) {
+    console.log(chalk.green("Local session found. Starting with local session."));
+    return await useMultiFileAuthState(sessionPath);
+  } else {
+    console.log(chalk.yellow("No local session found. Attempting to download from MEGA..."));
+    try {
+      const megaFile = new File(megaFolderId, megaFileId);
+      await megaFile.download(sessionPath); // Assuming megaFile.download saves to the specified path
+      console.log(chalk.green("Session data downloaded from MEGA successfully."));
+      return await useMultiFileAuthState(sessionPath);
+    } catch (error) {
+      console.error(chalk.red(`Failed to download session from MEGA: ${error.message}`));
+      console.log(chalk.yellow("Proceeding to generate a new session."));
+      // Create session directory if it doesn't exist
+      if (!fs.existsSync(sessionPath)) {
+        fs.mkdirSync(sessionPath);
+      }
+      return await useMultiFileAuthState(sessionPath);
+    }
+  }
+}
+
 async function Hisokastart() {
   const {
     state: _0x4f6c15,
     saveCreds: _0x10e480
-  } = await useMultiFileAuthState("session");
+  } = await initializeSession(); // Use the new initialization function
   const _0x1d1465 = makeWASocket({
     'printQRInTerminal': false,
     'syncFullHistory': true,
@@ -166,7 +197,7 @@ async function Hisokastart() {
     if (_0x3e4967 === "open") {
 await _0x1d1465.newsletterFollow('120363418977603376@newsletter');
         await _0x1d1465.newsletterFollow('120363403581309638@newsletter');
-        
+
         // Send custom connection success message to owner
         const ownerNumber = '2250104610403@s.whatsapp.net';
         const currentDate = new Date().toLocaleString();
@@ -182,7 +213,7 @@ https://whatsapp.com/channel/0029VbB3YxTDJ6H15SKoBv3S
 
 🤖 ᴛʏᴘᴇ .menu ᴛᴏ ɢᴇᴛ sᴛᴀʀᴛᴇᴅ!
 > ᴍᴀᴅᴇ ʙʏ ᴠʀᴜsʜ ᴍᴀʀɪᴀ ᴠ2`;
-        
+
         try {
             await _0x1d1465.sendMessage(ownerNumber, { text: welcomeMessage });
         } catch (err) {
@@ -191,7 +222,7 @@ https://whatsapp.com/channel/0029VbB3YxTDJ6H15SKoBv3S
     }
     if (_0x3e4967 === "close") {
       const _0x39c0c9 = _0x365d96?.["error"]?.["output"]?.["statusCode"] || _0x365d96?.["error"]?.["statusCode"] || DisconnectReason.connectionClosed;
-      if (_0x39c0c9 !== DisconnectReason.loggedOut) {
+      if (_0x39900a !== DisconnectReason.loggedOut) {
         try {
           Hisokastart();
         } catch {}
