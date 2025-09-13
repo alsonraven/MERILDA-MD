@@ -9,6 +9,7 @@ global.nobot = "2250104610403"
 global.namaowner = "𝕽𝖆𝖛𝖊𝖓-𝓗𝓲𝓼𝓸𝓴𝓪"
 global.namaBot = "𝚅𝚛𝚞𝚜𝚑 𝙼𝚊𝚛𝚒𝚊 𝚟𝟸"
 global.title = "𝚅𝚛𝚞𝚜𝚑 𝙼𝚊𝚛𝚒𝚊 𝚟𝟸"
+global.SESSION_ID = process.env.SESSION_ID || ""
 
 // Don't Change
 global.creator = `${owner}@s.whatsapp.net` 
